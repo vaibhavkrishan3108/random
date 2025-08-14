@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+</head>
+<body class="letter-page">
+    <div class="floating-hearts" id="hearts-container"></div>
+    
+    <!-- Envelope Container -->
+    <div class="envelope-container" id="envelope-container">
+        <div class="envelope-wrapper">
+            <div class="envelope">
+                <div class="envelope-flap"></div>
+                <div class="envelope-content">
+                    <div class="envelope-letter">
+                        <!-- Empty envelope -->
+                    </div>
+                </div>
+                <div class="envelope-top"></div>
+                <div class="envelope-right"></div>
+                <div class="envelope-bottom"></div>
+                <div class="envelope-left"></div>
+                <div class="envelope-seal">❤️</div>
+                <!-- Updated 3D heart for better display -->
+                <div class="heart-3d" id="heart-3d"></div>
+            </div>
+            
+            <!-- Text below envelope -->
+            <div class="envelope-text">
+                <div class="envelope-title">A Letter For You</div>
+                <p>Click to open</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="letter-container" id="letter-content">
+        <div class="letter" id="letter">
+            <h2>My Dearest,</h2>
+            
+            <div class="letter-content">
+                <p>
+                    On your special day, I wanted to create something as unique and beautiful as you are to me. Even though we're miles apart, my heart is with you, celebrating every moment.
+                </p>
+                
+                <p>
+                    Every day with you in my life is a gift I cherish. Your smile brightens my darkest days, and your voice is the most beautiful sound I know. Your kindness, intelligence, and the way you see the world constantly amazes me.
+                </p>
+                
+                <p>
+                    Distance may separate us physically, but it has only made my love for you grow stronger. I count down the days until I can hold you in my arms again, but until then, I hope this small digital gift brings a smile to your beautiful face.
+                </p>
+                
+                <p>
+                    Happy Birthday, my love. May this year bring you all the happiness, success, and joy you deserve.
+                </p>
+                
+                <p>
+                    Forever yours,<br>
+                    With all my heart and soul
+                </p>
+            </div>
+        </div>
+        
+        <div class="music-player" id="music-player">
+            <div class="player-controls">
+                <button id="play-pause">⏸️ Pause Music</button>
+            </div>
+            <audio id="background-music" loop preload="auto">
+                <source src="music/Rachel Chinouriri - So My Darling (Acoustic) [Lyric Video].mp3" type="audio/mp3">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+        
+        <div class="continue-button" id="continue-button">
+            <button class="glow-button" onclick="window.location.href='reasons.html'">See Why I Love You ❤️</button>
+        </div>
+    </div>
+
+    <script>
+        // Create floating hearts
+        function createFloatingHearts() {
+            const heartsContainer = document.getElementById('hearts-container');
+            const heartSymbols = ['❤️', '💖', '💕', '💓', '💗', '💘', '💝', '💞'];
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = `${Math.random() * 95}%`;
+                heart.style.animationDuration = `${Math.random() * 10 + 5}s`;
+                heart.style.animationDelay = `${Math.random() * 5}s`;
+                heart.style.fontSize = `${Math.random() * 20 + 10}px`;
+                heartsContainer.appendChild(heart);
+            }
+        }
+        
+        // Handle envelope and music player
+        document.addEventListener('DOMContentLoaded', function() {
+            const envelope = document.querySelector('.envelope');
+            const envelopeContainer = document.getElementById('envelope-container');
+            const envelopeFlap = document.querySelector('.envelope-flap');
+            const letterContent = document.getElementById('letter-content');
+            const playPauseButton = document.getElementById('play-pause');
+            const audio = document.getElementById('background-music');
+            
+            // Set lower volume
+            audio.volume = 0.4;
+            
+            // Add floating animation to envelope
+            gsap.to(envelope, {
+                y: '-=10',
+                duration: 1.5,
+                repeat: -1,
+                yoyo: true,
+                ease: 'power1.inOut'
+            });
+            
+            const envelopeText = document.querySelector('.envelope-text');
+            const envelopeWrapper = document.querySelector('.envelope-wrapper');
+            
+            // Function to open the envelope
+            function openEnvelope() {
+                // Open envelope animation
+                gsap.to(envelopeFlap, {
+                    transform: 'rotateX(180deg)',
+                    duration: 0.8,
+                    ease: 'power2.inOut'
+                });
+                
+                // Play music
+                audio.play().then(() => {
+                    playPauseButton.textContent = '⏸️ Pause Music';
+                }).catch(error => {
+                    console.log('Play prevented by browser:', error);
+                    playPauseButton.textContent = '▶️ Play Music';
+                });
+                
+                // Animate text to fade out
+                gsap.to(envelopeText, {
+                    opacity: 0,
+                    y: 20,
+                    duration: 0.5,
+                    ease: 'power2.inOut'
+                });
+                
+                // Remove envelope after animation
+                setTimeout(() => {
+                    gsap.to(envelopeWrapper, {
+                        opacity: 0,
+                        y: -100,
+                        scale: 0.8,
+                        duration: 0.8,
+                        ease: 'power2.inOut',
+                        onComplete: () => {
+                            // Hide envelope container
+                            envelopeContainer.style.display = 'none';
+                            
+                            // Show letter content
+                            letterContent.style.visibility = 'visible';
+                            gsap.to(letterContent, {
+                                opacity: 1,
+                                duration: 1,
+                                ease: 'power2.inOut'
+                            });
+                        }
+                    });
+                }, 1000);
+            }
+            
+            // Envelope click handler
+            envelope.addEventListener('click', openEnvelope);
+            
+            // Text click handler
+            envelopeText.addEventListener('click', openEnvelope);
+            
+            // Music player controls
+            playPauseButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                if (audio.paused) {
+                    audio.play();
+                    playPauseButton.textContent = '⏸️ Pause Music';
+                } else {
+                    audio.pause();
+                    playPauseButton.textContent = '▶️ Play Music';
+                }
+            });
+            
+            // Update button states on audio events
+            audio.addEventListener('play', function() {
+                playPauseButton.textContent = '⏸️ Pause Music';
+            });
+            
+            audio.addEventListener('pause', function() {
+                playPauseButton.textContent = '▶️ Play Music';
+            });
+        });
+        
+        // On page load
+        window.onload = function() {
+            createFloatingHearts();
+            
+            // Animate letter content with GSAP
+            gsap.from("#letter", {
+                duration: 1.5, 
+                opacity: 0,
+                y: 30,
+                ease: "power2.out"
+            });
+            
+            gsap.from(".letter-content p", {
+                duration: 1,
+                opacity: 0,
+                y: 20,
+                stagger: 0.4,
+                ease: "power2.out",
+                delay: 0.5
+            });
+            
+            gsap.from("#music-player, #continue-button", {
+                duration: 1,
+                opacity: 0,
+                y: 20,
+                stagger: 0.3,
+                ease: "power2.out",
+                delay: 3
+            });
+        };
+    </script>
+</body>
+</html>

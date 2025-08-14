@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: linear-gradient(135deg, #000000 0%, #1a1a2e 100%);
+            font-family: 'Montserrat', sans-serif;
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cake-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 15vh;
+            box-sizing: border-box;
+            gap: 40px;
+        }
+
+        .wish-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255, 107, 149, 0.8), 0 0 30px rgba(255, 107, 149, 0.5);
+            position: relative;
+            z-index: 5;
+        }
+
+        /* Cake styling */
+        .cake {
+            position: relative;
+            width: 400px;
+            height: 300px;
+            margin: 0 auto;
+            transform: translateY(0);
+        }
+
+        .cake-base {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 120px;
+            background: linear-gradient(to right, #e85a71, #ff6b95);
+            border-radius: 10px 10px 5px 5px;
+            box-shadow: 0 10px 25px rgba(232, 90, 113, 0.5);
+        }
+
+        .cake-middle {
+            position: absolute;
+            bottom: 120px;
+            width: 80%;
+            height: 80px;
+            left: 10%;
+            background: linear-gradient(to right, #f9c5d1, #f3a3b8);
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(243, 163, 184, 0.5);
+        }
+
+        .cake-top {
+            position: absolute;
+            bottom: 200px;
+            width: 60%;
+            height: 60px;
+            left: 20%;
+            background: linear-gradient(to right, #ffdde1, #ee9ca7);
+            border-radius: 5px 5px 0 0;
+            box-shadow: 0 5px 15px rgba(238, 156, 167, 0.5);
+        }
+
+        .candle {
+            position: absolute;
+            width: 15px;
+            height: 50px;
+            background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+            border-radius: 5px;
+            z-index: 10;
+        }
+
+        .candle1 { bottom: 260px; left: 30%; }
+        .candle2 { bottom: 260px; left: 50%; }
+        .candle3 { bottom: 260px; left: 70%; }
+
+        .flame {
+            position: absolute;
+            bottom: 100%;
+            width: 25px;
+            height: 35px;
+            background: radial-gradient(ellipse at center, #ffef7e 0%, #ffab4a 50%, #ff6b4a 100%);
+            border-radius: 50% 50% 35% 35%;
+            transform-origin: center bottom;
+            left: -5px;
+            filter: blur(1px);
+            box-shadow: 0 0 20px #ff6b4a, 0 0 40px #ff6b4a, 0 0 60px #ff6b4a;
+            animation: flicker 0.8s infinite alternate;
+            z-index: 11;
+        }
+
+        @keyframes flicker {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1) rotate(5deg); opacity: 0.8; }
+        }
+
+        .name-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: #fff;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            white-space: nowrap;
+        }
+
+        /* Sprinkles */
+        .sprinkle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        /* Fan styling */
+        .fan-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin-top: 40px;
+            perspective: 1000px;
+            transform: translateY(0);
+        }
+
+        .fan {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.15);
+            transform-style: preserve-3d;
+            backdrop-filter: blur(5px);
+        }
+
+        .fan:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .fan:active {
+            transform: scale(0.95);
+        }
+
+        .fan-blades {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            animation: none;
+            transform-style: preserve-3d;
+        }
+
+        .fan-blade {
+            position: absolute;
+            width: 85%;
+            height: 12px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 6px;
+            transform-origin: center;
+            left: 7.5%;
+            top: calc(50% - 6px);
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+        }
+
+        .fan-blade:nth-child(1) { transform: rotate(0deg); }
+        .fan-blade:nth-child(2) { transform: rotate(45deg); }
+        .fan-blade:nth-child(3) { transform: rotate(90deg); }
+        .fan-blade:nth-child(4) { transform: rotate(135deg); }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .fan.active .fan-blades {
+            animation: spin 0.2s linear infinite;
+        }
+
+        .fan-center {
+            width: 22px;
+            height: 22px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            z-index: 2;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+        }
+
+        .instructions {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 12px 25px;
+            border-radius: 30px;
+            backdrop-filter: blur(5px);
+            letter-spacing: 0.5px;
+        }
+
+        /* Wind effect */
+        .wind-particle {
+            position: absolute;
+            width: 10px;
+            height: 3px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 3px;
+            filter: blur(1px);
+        }
+
+        /* Confetti */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0.7;
+        }
+
+        /* Success message */
+        .success-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            opacity: 0;
+            transition: all 1s ease;
+            z-index: 100;
+            max-width: 80%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+        }
+
+        .success-message.visible {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            pointer-events: auto;
+        }
+
+        .success-message h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: #ff6b95;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(255, 107, 149, 0.5);
+        }
+
+        .success-message p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #e85a71 0%, #ff6b95 100%);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(232, 90, 113, 0.4);
+        }
+
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(232, 90, 113, 0.6);
+        }
+
+        .back-button:active {
+            transform: translateY(-1px);
+        }
+
+        /* Ambient effects */
+        .ambient-light {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: radial-gradient(circle at 50% 30%, rgba(255, 107, 149, 0.2) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 500px) {
+            .cake {
+                width: 300px;
+                transform: translateY(-10px) scale(0.8);
+            }
+            
+            .wish-text {
+                font-size: 2.8rem;
+                margin-bottom: 30px;
+            }
+            
+            .fan-container {
+                transform: translateY(0);
+            }
+        }
+
+        /* Decorative elements */
+        .star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 4s infinite alternate;
+            z-index: 0;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="ambient-light"></div>
+    
+    <!-- Add decorative stars -->
+    <script>
+        for (let i = 0; i < 50; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.top = Math.random() * 100 + 'vh';
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.opacity = Math.random() * 0.7 + 0.3;
+            star.style.animationDelay = Math.random() * 4 + 's';
+            document.body.appendChild(star);
+        }
+    </script>
+
+    <div class="cake-container">
+        <h1 class="wish-text">Make a Birthday Wish!</h1>
+        
+        <div class="cake" style="margin-top: 0;">
+            <div class="cake-top"></div>
+            <div class="cake-middle">
+                <div class="name-text">Happy Birthday!</div>
+            </div>
+            <div class="cake-base"></div>
+            
+            <div class="candle candle1">
+                <div class="flame" id="flame1"></div>
+            </div>
+            <div class="candle candle2">
+                <div class="flame" id="flame2"></div>
+            </div>
+            <div class="candle candle3">
+                <div class="flame" id="flame3"></div>
+            </div>
+        </div>
+        
+        <div class="fan-container">
+            <div class="fan" id="fan">
+                <div class="fan-blades">
+                    <div class="fan-blade"></div>
+                    <div class="fan-blade"></div>
+                    <div class="fan-blade"></div>
+                    <div class="fan-blade"></div>
+                </div>
+                <div class="fan-center"></div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            Click the fan to blow out the candles!
+        </div>
+    </div>
+    
+    <div class="success-message" id="success-message">
+        <h2>Happy Birthday, Sweetheart!</h2>
+        <p>Your wish has been made! May all your dreams come true this year.</p>
+        <p>I'm so grateful to have you in my life, and I can't wait to celebrate many more birthdays together.</p>
+        <p>I love you more than words can say! ❤️</p>
+        <button class="back-button" onclick="window.location.href='index.html'">Back to Home</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const fan = document.getElementById('fan');
+            const flames = document.querySelectorAll('.flame');
+            const successMessage = document.getElementById('success-message');
+            const cake = document.querySelector('.cake');
+            
+            // Add sprinkles to cake
+            addCakeDecorations();
+            
+            // Track candles blown status
+            let candlesBlown = 0;
+            const totalCandles = flames.length;
+            
+            // Fan click event
+            fan.addEventListener('click', function() {
+                // Activate fan
+                this.classList.add('active');
+                
+                // Create wind effect
+                createWindEffect();
+                
+                // Blow out candles with delay
+                setTimeout(() => blowOutCandle(0), 600);
+                setTimeout(() => blowOutCandle(1), 900);
+                setTimeout(() => blowOutCandle(2), 1200);
+                
+                // Deactivate fan after a while
+                setTimeout(() => {
+                    fan.classList.remove('active');
+                }, 2500);
+            });
+            
+            function blowOutCandle(index) {
+                if (flames[index] && flames[index].style.display !== 'none') {
+                    // Blow out animation
+                    gsap.to(flames[index], {
+                        opacity: 0,
+                        scale: 0,
+                        duration: 0.3,
+                        onComplete: function() {
+                            flames[index].style.display = 'none';
+                            candlesBlown++;
+                            
+                            // Check if all candles are blown
+                            if (candlesBlown === totalCandles) {
+                                setTimeout(celebrateBirthday, 500);
+                            }
+                        }
+                    });
+                }
+            }
+            
+            function createWindEffect() {
+                // Get positions
+                const fanRect = fan.getBoundingClientRect();
+                const cakeRect = cake.getBoundingClientRect();
+                
+                // Create wind particles
+                for (let i = 0; i < 60; i++) {
+                    setTimeout(() => {
+                        const particle = document.createElement('div');
+                        particle.classList.add('wind-particle');
+                        
+                        // Position near fan
+                        const startX = fanRect.left + fanRect.width/2;
+                        const startY = fanRect.top + fanRect.height/2 - 20 + Math.random() * 40;
+                        
+                        // Target position near candles
+                        const endX = cakeRect.left + cakeRect.width/2 - 50 + Math.random() * 100;
+                        const endY = cakeRect.top + 50 + Math.random() * 30;
+                        
+                        // Set initial position
+                        particle.style.left = startX + 'px';
+                        particle.style.top = startY + 'px';
+                        
+                        // Add to body
+                        document.body.appendChild(particle);
+                        
+                        // Animate
+                        gsap.to(particle, {
+                            left: endX,
+                            top: endY,
+                            opacity: 0,
+                            duration: 1 + Math.random() * 0.5,
+                            ease: "power1.out",
+                            onComplete: () => {
+                                particle.remove();
+                            }
+                        });
+                    }, i * 10);
+                }
+            }
+            
+            function celebrateBirthday() {
+                // Show success message
+                successMessage.classList.add('visible');
+                
+                // Create confetti
+                createConfetti();
+            }
+            
+            function createConfetti() {
+                const colors = ['#e85a71', '#ff6b95', '#f9c5d1', '#ffdde1', '#ffffff', '#f3a3b8'];
+                
+                for (let i = 0; i < 150; i++) {
+                    setTimeout(() => {
+                        const confetti = document.createElement('div');
+                        confetti.classList.add('confetti');
+                        
+                        // Random position, size, color
+                        confetti.style.left = Math.random() * 100 + 'vw';
+                        confetti.style.top = -20 + 'px';
+                        confetti.style.width = 5 + Math.random() * 10 + 'px';
+                        confetti.style.height = 5 + Math.random() * 10 + 'px';
+                        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                        confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                        
+                        // Add to body
+                        document.body.appendChild(confetti);
+                        
+                        // Animate falling
+                        gsap.to(confetti, {
+                            top: '100vh',
+                            left: `+=${Math.random() * 200 - 100}`,
+                            rotation: `+=${Math.random() * 360}`,
+                            duration: 3 + Math.random() * 3,
+                            ease: "power1.out",
+                            onComplete: () => {
+                                confetti.remove();
+                            }
+                        });
+                    }, i * 30);
+                }
+            }
+            
+            function addCakeDecorations() {
+                const cakeMiddle = document.querySelector('.cake-middle');
+                const cakeBase = document.querySelector('.cake-base');
+                const cakeTop = document.querySelector('.cake-top');
+                
+                const colors = ['#ffffff', '#ffef7e', '#ffab4a', '#ff6b4a', '#f3a3b8', '#c3cfe2'];
+                
+                // Add sprinkles to each layer
+                addSprinkles(cakeTop, 20, colors);
+                addSprinkles(cakeMiddle, 30, colors);
+                addSprinkles(cakeBase, 50, colors);
+            }
+            
+            function addSprinkles(element, count, colors) {
+                for (let i = 0; i < count; i++) {
+                    const sprinkle = document.createElement('div');
+                    sprinkle.classList.add('sprinkle');
+                    sprinkle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    sprinkle.style.top = Math.random() * 100 + '%';
+                    sprinkle.style.left = Math.random() * 100 + '%';
+                    element.appendChild(sprinkle);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

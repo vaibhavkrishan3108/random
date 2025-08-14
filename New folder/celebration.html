@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+</head>
+<body class="celebration-page">
+    <div class="celebration-container">
+        <!-- Main content -->
+        <div class="birthday-message" id="birthday-message">
+            <h1>Happy Birthday, <span class="name">Sweetheart</span>! ❤️</h1>
+            <div class="couple-photo">
+                <img src="images/main.jpg" alt="Couple Photo" id="couple-photo">
+            </div>
+        </div>
+        
+        <!-- Balloons container -->
+        <div class="balloons-container" id="balloons-container"></div>
+        
+        <!-- Continue button -->
+        <div class="continue-button hidden" id="continue-button">
+            <button class="glow-button" onclick="window.location.href='letter.html'">Read My Letter To You ❤️</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to create balloons
+        function createBalloons() {
+            const colors = ['#FF6B6B', '#4ECDC4', '#FFD166', '#FF9F1C', '#E76F51', '#F4A261', '#E0BBE4'];
+            const balloonsContainer = document.getElementById('balloons-container');
+            
+            // Create balloons at the bottom
+            for (let i = 0; i < 10; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                balloon.style.left = `${Math.random() * 90 + 5}%`;
+                balloon.style.animationDelay = `${Math.random() * 2}s`;
+                balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                balloonsContainer.appendChild(balloon);
+            }
+            
+            // Create static balloons on the sides
+            const staticColors = ['#FF6B6B', '#FFD166', '#FF9F1C', '#4ECDC4'];
+            
+            // Left side balloons
+            for (let i = 0; i < 5; i++) {
+                const staticBalloon = document.createElement('div');
+                staticBalloon.className = 'static-balloon';
+                staticBalloon.style.left = `${Math.random() * 15 + 5}%`;
+                staticBalloon.style.bottom = `${Math.random() * 30 + 5}%`;
+                staticBalloon.style.backgroundColor = staticColors[Math.floor(Math.random() * staticColors.length)];
+                staticBalloon.style.transform = `scale(${0.8 + Math.random() * 0.5})`;
+                
+                balloonsContainer.appendChild(staticBalloon);
+            }
+            
+            // Right side balloons
+            for (let i = 0; i < 5; i++) {
+                const staticBalloon = document.createElement('div');
+                staticBalloon.className = 'static-balloon';
+                staticBalloon.style.right = `${Math.random() * 15 + 5}%`;
+                staticBalloon.style.bottom = `${Math.random() * 30 + 5}%`;
+                staticBalloon.style.backgroundColor = staticColors[Math.floor(Math.random() * staticColors.length)];
+                staticBalloon.style.transform = `scale(${0.8 + Math.random() * 0.5})`;
+                
+                balloonsContainer.appendChild(staticBalloon);
+            }
+        }
+
+        // Run confetti animation
+        window.onload = function() {
+            // Launch confetti
+            var duration = 10 * 1000; // 10 seconds
+            var end = Date.now() + duration;
+            
+            var colors = ['#FF6B6B', '#4ECDC4', '#FFD166', '#FF9F1C', '#E76F51', '#F4A261'];
+
+            // Initial celebratory burst
+            var count = 200;
+            var defaults = {
+                origin: { y: 0.7 },
+                shapes: ['square', 'circle'],
+                ticks: 500
+            };
+            
+            confetti({
+                ...defaults,
+                particleCount: count,
+                scalar: 1.2,
+                spread: 100,
+                colors: colors,
+                disableForReducedMotion: true
+            });
+            
+            // Continuous confetti
+            (function frame() {
+                // Left side confetti
+                confetti({
+                    particleCount: 2,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0, y: 0.65 },
+                    colors: colors
+                });
+                
+                // Right side confetti
+                confetti({
+                    particleCount: 2,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1, y: 0.65 },
+                    colors: colors
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+            
+            // Create and animate balloons
+            createBalloons();
+            
+            // Fade in the birthday message
+            gsap.from("#birthday-message", {
+                duration: 1.5,
+                opacity: 0,
+                y: 30,
+                ease: "back.out(1.7)",
+                delay: 1
+            });
+            
+            // Show continue button after delay
+            setTimeout(() => {
+                document.getElementById('continue-button').classList.remove('hidden');
+                gsap.from("#continue-button", {
+                    duration: 1,
+                    opacity: 0,
+                    y: 20,
+                    ease: "power2.out"
+                });
+            }, 6000);
+        };
+    </script>
+</body>
+</html>
